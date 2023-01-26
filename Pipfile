@@ -6,8 +6,9 @@ name = "pypi"
 [packages]
 "discord.py" = "*"
 python-dotenv = "*"
+google-api-python-client = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.9"
+python_version = "*"
