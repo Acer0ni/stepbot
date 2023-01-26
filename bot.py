@@ -1,5 +1,7 @@
 import discord
 import os
+import asyncio
+from stepbot.commands.apply import Apply
 from discord.ext import commands
 from dotenv import load_dotenv
 
@@ -15,5 +17,9 @@ bot = commands.Bot(command_prefix="!",intents =intents)
 async def on_ready():
     print(f"{bot.user.name} has connect to Discord:\n")
 
+async def setup(bot):
+    await bot.add_cog(Apply(bot))
 
+
+asyncio.run(setup(bot))
 bot.run(TOKEN)
