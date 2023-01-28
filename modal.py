@@ -25,7 +25,7 @@ class MyClient(discord.Client):
         await self.tree.sync(guild=TEST_GUILD)
 
 
-class Apply(discord.ui.Modal, title='Apply'):
+class Apply(discord.ui.Modal, title='Apply',):
     # This is a short, single-line input, where user can submit the number of players applying
     number = discord.ui.TextInput(
         label='Number of players applying',
