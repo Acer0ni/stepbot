@@ -3,8 +3,9 @@ import traceback
 
 class ApplyModal(discord.ui.Modal, title='Apply'):
 
-    def __init__(self,clan_name,*args,**kwargs):
+    def __init__(self,clan_name,bot,*args,**kwargs):
         self.clan_name = clan_name
+        self.bot = bot
         super().__init__(*args,**kwargs)
 
 
@@ -98,12 +99,14 @@ class ApplyModal(discord.ui.Modal, title='Apply'):
         embed.set_author(name=interaction.user, icon_url=interaction.user.avatar.url if interaction.user.avatar else None)
         thread_id = self.get_clan_id_from_name()
         clan_thread =interaction.client.get_channel(thread_id)
-        await clan_thread.send(embed=embed)
+        msg = await clan_thread.send(embed=embed)
+        await msg.add_reaction("👍")
+        await msg.add_reaction("👎")
         await interaction.response.send_message(embed=embed,ephemeral = True)
         
 
     async def on_error(self, interaction: discord.Interaction, error: Exception) -> None:
-        await interaction.response.send_message(error, ephemeral=True)
+        await interaction.response.send_message(error, ephemeral=False)
 
         # Make sure we know what the error actually is
         traceback.print_exception(type(error), error, error.__traceback__)
