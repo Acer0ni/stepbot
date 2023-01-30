@@ -2,6 +2,7 @@ import discord
 import os
 import asyncio
 from stepbot.commands.apply import Apply
+from stepbot.commands.ap import Ap
 from discord.ext import commands
 from dotenv import load_dotenv
 
@@ -25,6 +26,7 @@ async def on_ready():
 async def setup(bot):
     print("setup ran")
     await Apply.setup(bot)
+    await Ap.setup(bot)
 
 asyncio.run(setup(bot))
 bot.run(TOKEN)
