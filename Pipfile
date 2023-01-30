@@ -8,6 +8,7 @@ name = "pypi"
 python-dotenv = "*"
 google-api-python-client = "*"
 pycord = "*"
+gspread = "*"
 
 [dev-packages]
 autopep8 = "*"

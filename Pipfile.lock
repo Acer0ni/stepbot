@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "8683a5906ae32e6abb4479b3187092c0ceeea5b7d5bc5de8d81ccf8f9d8080bd"
+            "sha256": "12763e80585ae1f246b6cebcb8bcec3685b83ec7c9881ff7fbd5447486dbafcd"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -290,6 +290,14 @@
             ],
             "version": "==0.1.0"
         },
+        "google-auth-oauthlib": {
+            "hashes": [
+                "sha256:40cc612a13c3336d5433e94e2adb42a0c88f6feb6c55769e44500fc70043a576",
+                "sha256:81056a310fb1c4a3e5a7e1a443e1eb96593c6bbc55b26c0261e4d3295d3e6593"
+            ],
+            "markers": "python_version >= '3.6'",
+            "version": "==0.8.0"
+        },
         "googleapis-common-protos": {
             "hashes": [
                 "sha256:c727251ec025947d545184ba17e3578840fc3a24a0516a020479edab660457df",
@@ -297,6 +305,14 @@
             ],
             "markers": "python_version >= '3.7'",
             "version": "==1.58.0"
+        },
+        "gspread": {
+            "hashes": [
+                "sha256:ce76f9c16b88ccb792350142224a59afa8e69f7463f3d3417148cbe892efc7cb",
+                "sha256:dbeedd08c6a7f7b0bfc1a54e17c29205362250c77bf98e11125c5d99fd7f4ba7"
+            ],
+            "index": "pypi",
+            "version": "==5.7.2"
         },
         "httplib2": {
             "hashes": [
@@ -440,6 +456,14 @@
             "markers": "python_version >= '3.8'",
             "version": "==1.24.1"
         },
+        "oauthlib": {
+            "hashes": [
+                "sha256:8139f29aac13e25d502680e9e19963e83f16838d48a0d71c287fe40e7067fbca",
+                "sha256:9859c40929662bec5d64f34d01c99e093149682a3f38915dc0655d5a633dd918"
+            ],
+            "markers": "python_version >= '3.6'",
+            "version": "==3.2.2"
+        },
         "protobuf": {
             "hashes": [
                 "sha256:1f22ac0ca65bb70a876060d96d914dae09ac98d114294f77584b0d2644fa9c30",
@@ -526,6 +550,14 @@
             ],
             "markers": "python_version >= '3.7' and python_version < '4'",
             "version": "==2.28.2"
+        },
+        "requests-oauthlib": {
+            "hashes": [
+                "sha256:2577c501a2fb8d05a304c09d090d6e47c306fef15809d102b327cf8364bddab5",
+                "sha256:75beac4a47881eeb94d5ea5d6ad31ef88856affe2332b9aafb52c6452ccf0d7a"
+            ],
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
+            "version": "==1.3.1"
         },
         "rsa": {
             "hashes": [
