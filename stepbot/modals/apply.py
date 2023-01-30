@@ -98,7 +98,7 @@ class ApplyModal(discord.ui.Modal, title='Apply'):
 
         embed = discord.Embed(title='Application Submitted',
                               description=f'IGN: {self.number.value}')
-        embed.add_field(name='Number of players applying',
+        embed.add_field(name='Number',
                         value=self.number.value, inline=False)
         embed.add_field(name='IGN', value=self.ign.value, inline=False)
         embed.add_field(name='CP', value=self.cp.value, inline=False)

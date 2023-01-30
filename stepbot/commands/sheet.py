@@ -1,12 +1,6 @@
 import gspread
 
 gc = gspread.service_account(filename='C:/Users/Marc/Documents/Code/stepbot/credentials.json')
-thisdict = {
-    "Number" : 1,
-    "IGN": "Artz,Aceroni",
-    "CP": "10,20",
-    "Role": 'mage,warrior',
-}
 def get_empty_row(worksheet,spreadsheet):
     # Authenticate and access the Google Spreadsheet
     sh = gc.open(worksheet)
@@ -27,7 +21,7 @@ def get_empty_row(worksheet,spreadsheet):
 def insert_to_sheet(dictionary, worksheet,spreadsheet):
     sh = gc.open(worksheet)
     waitlist = sh.worksheet(spreadsheet)
-    column = 1
+    column = 1  
 
     empty_row = get_empty_row(worksheet,spreadsheet)
 
@@ -46,7 +40,4 @@ def insert_to_sheet(dictionary, worksheet,spreadsheet):
                 while waitlist.cell(empty_row, column).value is not None:
                     column += 1
                 waitlist.update_cell(empty_row, column, v)
-                print(f'Inserted {v} to {key} column')
-
-
-insert_to_sheet(thisdict, 'stepbot','Sheet1')
+                print(f'Inserted {v} to {key} column \t')

@@ -32,7 +32,7 @@ class Apply(commands.Cog):
         elif reaction.emoji == "🕐":
             for field in embed.fields:
                 fields_values[field.name] = field.value
-            await insert_to_sheet(fields_values,'stepbot','Sheet1')
+            insert_to_sheet(fields_values,'stepbot','Sheet1')
             await reaction.message.channel.send('added to waiting list')
   
     
