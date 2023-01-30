@@ -40,6 +40,14 @@ class ApplyModal(discord.ui.Modal, title='Apply'):
         required=True,
         max_length=100,
     )
+    # role = discord.ui.Select(
+    #     placeholder='Please select the class',
+    #     min_values= 0, #fix this needs to be self.number.value but dont have access right now - Ace
+    #     max_values= 4,
+    #     options=[discord.SelectOption(label = "Mage"),discord.SelectOption(label = "Warlock"),discord.SelectOption(label = "Hunter"),discord.SelectOption(label = "Assassin"),discord.SelectOption(label = "Druid"),discord.SelectOption(label = "Shaman"),discord.SelectOption(label = "Gladiator"),discord.SelectOption(label = "Warrior")]
+
+
+   # )
     # get the tread id based on the clan name passed in
 
     def get_clan_id_from_name(self):
@@ -112,12 +120,17 @@ class ApplyModal(discord.ui.Modal, title='Apply'):
         await msg.add_reaction("❌")
         await msg.add_reaction("🕐")
         
+        #delete this line after testing
         await interaction.response.send_message(embed=embed, ephemeral=True)
+
+        
     async def on_error(self, interaction: discord.Interaction, error: Exception) -> None:
         await interaction.response.send_message(error, ephemeral=True)
 
         # Make sure we know what the error actually is
         traceback.print_exception(type(error), error, error.__traceback__)
+
+
     # def get_fields_values(self,id):
     #     fields = {}
     #     #i need to get the values of the fields from an embed with the id
