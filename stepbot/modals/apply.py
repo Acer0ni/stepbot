@@ -1,5 +1,6 @@
 import discord
 import traceback
+import datetime
 
 
 class ApplyModal(discord.ui.Modal, title='Apply'):
@@ -14,7 +15,7 @@ class ApplyModal(discord.ui.Modal, title='Apply'):
         placeholder='1',
         style=discord.TextStyle.short,
         required=True,
-        max_length=1
+        max_length=1,   
     )
     # This is a long, multi-line input, where user can submit the IGN of the player(s) applying
     ign = discord.ui.TextInput(
@@ -103,6 +104,8 @@ class ApplyModal(discord.ui.Modal, title='Apply'):
 
     async def on_submit(self, interaction: discord.Interaction):
         self.validate_on_submit()
+        date = datetime.datetime.now()
+        
 
         embed = discord.Embed(title='Application Submitted',
                               description=f'IGN: {self.number.value}')
@@ -113,6 +116,8 @@ class ApplyModal(discord.ui.Modal, title='Apply'):
         embed.add_field(name='Role', value=self.role.value, inline=False)
         embed.set_author(name=interaction.user,
                          icon_url=interaction.user.avatar.url if interaction.user.avatar else None)
+        # embed.set_footer(text=f"Application submitted for {self.clan_name}")
+        embed.timestamp = date
         thread_id = self.get_clan_id_from_name()
         clan_thread = interaction.client.get_channel(thread_id)
         msg = await clan_thread.send(embed=embed)

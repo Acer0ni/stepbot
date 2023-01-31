@@ -26,6 +26,7 @@ class Apply(commands.Cog):
     @commands.Cog.listener()
     async def on_reaction_add(self,reaction : discord.Reaction, user : discord.User):
         embed = reaction.message.embeds[0]
+        date = embed.timestamp.date()
         fields_values = {}
         if user.id == self.bot.user.id: 
             return
@@ -33,17 +34,21 @@ class Apply(commands.Cog):
             return
         if "tester" not in [role.name.lower() for role in user.roles]:
             print("unauthorized")
+            reaction.message.channel.send(f"{user.display_name} you are not authorized to react to tgis message")
             return
         if reaction.emoji == "✅":
-            await user.send(f" Accepted you can now apply to {self.clan_name}. Welcome to the clan {user.display_name}!")
-            #print(f'{user} as the correct {user.roles}')
+            await user.send(f" Accepted you can now apply to {self.clan_name}. Please apply in game {embed.author}!")
         elif reaction.emoji == "❌":
-            await user.send(f"get outa here {user.display_name} we dont want you in {self.clan_name}")
+            await user.send(f"Thanks you for considering {self.clan_name}, but your application as been rejected {embed.author.name}")
         elif reaction.emoji == "🕐":
             for field in embed.fields:
                 fields_values[field.name] = field.value
-            #insert_to_sheet(fields_values,'stepbot','Sheet1')
-            await user.send(f'hey {user.display_name}, we are full right now in {self.clan_name} but you have been added to the waiting list and we will get back to you when there is room.')
+            fields_values['discord'] = embed.author.name
+            fields_values['date'] = date.strftime("%m/%d/%Y")
+            print(fields_values)
+            insert_to_sheet(fields_values,'stepbot',self.clan_name)
+        #    await reaction.message.channel.send(f'hey {reaction.message.mentions[0].name}, we are full right now in {self.clan_name} but you have been added to the waiting list and we will get back to you when there is room.')
+
   
     
     async def setup(bot: commands.Bot): 
