@@ -46,8 +46,12 @@ class Apply(commands.Cog):
             fields_values['discord'] = embed.author.name
             fields_values['date'] = date.strftime("%m/%d/%Y")
             print(fields_values)
+            name = fields_values["discord"]
+            guild = self.bot.get_guild(323528876770852864)
+            applicant =guild.get_member_named(name)
+            await applicant.send("f'hey {name}, we are full right now in {self.clan_name} but you have been added to the waiting list and we will get back to you when there is room.'")
             insert_to_sheet(fields_values,'stepbot',self.clan_name)
-        #    await reaction.message.channel.send(f'hey {reaction.message.mentions[0].name}, we are full right now in {self.clan_name} but you have been added to the waiting list and we will get back to you when there is room.')
+            # print(f'hey {reaction.message.mentions[0].name}, we are full right now in {self.clan_name} but you have been added to the waiting list and we will get back to you when there is room.')
 
   
     
