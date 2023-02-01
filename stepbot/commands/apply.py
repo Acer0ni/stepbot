@@ -15,9 +15,11 @@ class Apply(commands.Cog):
 
     @app_commands.command(name="apply")
     async def cmd_apply(self,interaction:discord.Interaction, clan_name: str):
+        """
+        Apply to one of the Clans.(please check requirements first)
+        """
         self.clan_name = clan_name.lower()
         if self.clan_name not in self.clan_names:
-            #figure out making this a ephumerical embed later
             await interaction.response.send_message(content="Invalid clan name",ephemeral=True)
             return
 

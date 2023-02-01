@@ -10,6 +10,9 @@ class Ap(commands.Cog):
 
     @app_commands.command(name="ap")
     async def cmd_ap(self,interaction:discord.Interaction):
+        """
+        Explains how activity points work for clans.
+        """
         embed = discord.Embed()
         embed.set_image(url = "https://i.imgur.com/xWJT204.png")
         await interaction.response.send_message(embed=embed,ephemeral=True)
