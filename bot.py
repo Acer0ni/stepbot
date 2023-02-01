@@ -1,8 +1,8 @@
 import discord
 import os
 import asyncio
-from stepbot.commands.apply import Apply
-from stepbot.commands.ap import Ap
+from stepbot.commands.apply.command import Apply
+from stepbot.commands.ap.command import Ap
 from discord.ext import commands
 from dotenv import load_dotenv
 

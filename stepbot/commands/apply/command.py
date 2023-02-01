@@ -1,6 +1,6 @@
 from discord.ext import commands
 from discord import app_commands
-from stepbot.modals.apply import ApplyModal
+from stepbot.commands.apply.modal import ApplyModal
 from stepbot.commands.sheet import *
 import gspread
 import discord
@@ -30,20 +30,21 @@ class Apply(commands.Cog):
         embed = reaction.message.embeds[0]
         date = embed.timestamp.date()
         guild = self.bot.get_guild(323528876770852864)
-        name = fields_values["discord"]
-        applicant =guild.get_member_named(name)
+       
         fields_values = {}
         for field in embed.fields:
             fields_values[field.name] = field.value
         fields_values['discord'] = embed.author.name
         fields_values['date'] = date.strftime("%m/%d/%Y")
+        name = fields_values["discord"]
+        applicant =guild.get_member_named(name)
         if user.id == self.bot.user.id: 
             return
         if reaction.message.author.id != self.bot.user.id:
             return
         # if "tester" not in [role.name.lower() for role in user.roles]:
         #     print("unauthorized")
-        #     reaction.message.channel.send(f"{user.display_name} you are not authorized to react to tgis message")
+        #     reaction.message.channel.send(f"{user.display_name} you are not authorized to react to this message")
         #     return
         if reaction.emoji == "✅":
             await applicant.send(f" Accepted you can now apply to {embed.footer.text}. Please apply in game {embed.author.name}!")
