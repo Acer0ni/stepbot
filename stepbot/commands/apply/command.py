@@ -1,17 +1,23 @@
 from discord.ext import commands
 from discord import app_commands
+from dotenv import load_dotenv
 from stepbot.commands.apply.modal import ApplyModal
 from stepbot.commands.sheet import *
 import gspread
+import os
+
 import discord
 
 class Apply(commands.Cog):
+    clan_name = None
    
 
     def __init__(self,bot:commands.Bot):
+
         self.bot = bot
         self.clan_names =  ["abnormal","paradox","anomaly","paranormal"]
-        self.clan_name = None
+        self.GUILD_ID = int(os.getenv("GUILD_ID"))
+
 
     @app_commands.command(name="apply")
     async def cmd_apply(self,interaction:discord.Interaction, clan_name: str):
@@ -29,8 +35,7 @@ class Apply(commands.Cog):
     async def on_reaction_add(self,reaction : discord.Reaction, user : discord.User):
         embed = reaction.message.embeds[0]
         date = embed.timestamp.date()
-        guild = self.bot.get_guild(323528876770852864)
-       
+        guild = self.bot.get_guild(self.GUILD_ID)
         fields_values = {}
         for field in embed.fields:
             fields_values[field.name] = field.value
@@ -42,10 +47,10 @@ class Apply(commands.Cog):
             return
         if reaction.message.author.id != self.bot.user.id:
             return
-        # if "tester" not in [role.name.lower() for role in user.roles]:
-        #     print("unauthorized")
-        #     reaction.message.channel.send(f"{user.display_name} you are not authorized to react to this message")
-        #     return
+        if "tester" not in [role.name.lower() for role in user.roles]:
+            print("unauthorized")
+            reaction.message.channel.send(f"{name} you are not authorized to react to this message")
+            return
         if reaction.emoji == "✅":
             await applicant.send(f" Accepted you can now apply to {embed.footer.text}. Please apply in game {embed.author.name}!")
         elif reaction.emoji == "❌":
@@ -53,11 +58,6 @@ class Apply(commands.Cog):
         elif reaction.emoji == "🕐":
             print(fields_values)
             await applicant.send(f'hey {name}, we are full right now in {embed.footer.text} but you have been added to the waiting list and we will get back to you when there is room.')
-            insert_to_sheet(fields_values,'stepbot',embed.footer.text)          # print(f'hey {reaction.message.mentions[0].name}, we are full right now in {self.clan_name} but you have been added to the waiting list and we will get back to you when there is room.')
-
+            insert_to_sheet(fields_values,'stepbot',embed.footer.text)         
   
     
-    async def setup(bot: commands.Bot): 
-
-        await bot.add_cog(Apply(bot),guild=discord.Object(id=323528876770852864)) 
-        print("cog added")

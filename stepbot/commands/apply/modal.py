@@ -1,12 +1,16 @@
 import discord
 import traceback
 import datetime
+import os
+from dotenv import load_dotenv
 
 
 class ApplyModal(discord.ui.Modal, title='Apply'):
     
     def __init__(self, clan_name, *args, **kwargs):
         self.clan_name = clan_name
+        self.ABNORMAL_THREAD_ID = int(os.getenv("ABNORMAL_THREAD_ID"))
+        self.PARADOX_THREAD_ID = int(os.getenv("PARADOX_THREAD_ID"))
         super().__init__(*args, **kwargs)
 
     # This is a short, single-line input, where user can submit the number of players applying
@@ -41,23 +45,17 @@ class ApplyModal(discord.ui.Modal, title='Apply'):
         required=True,
         max_length=100,
     )
-    # role = discord.ui.Select(
-    #     placeholder='Please select the class',
-    #     min_values= 0, #fix this needs to be self.number.value but dont have access right now - Ace
-    #     max_values= 4,
-    #     options=[discord.SelectOption(label = "Mage"),discord.SelectOption(label = "Warlock"),discord.SelectOption(label = "Hunter"),discord.SelectOption(label = "Assassin"),discord.SelectOption(label = "Druid"),discord.SelectOption(label = "Shaman"),discord.SelectOption(label = "Gladiator"),discord.SelectOption(label = "Warrior")]
+   
 
 
-   # )
-    # get the tread id based on the clan name passed in
-
+    # get the thread id based on the clan name passed in
     def get_clan_id_from_name(self):
         thread_id = None
         match self.clan_name:
             case "abnormal":
-                thread_id = 1068628252974911620  # To hide in .env file
+                thread_id = self.ABNORMAL_THREAD_ID  # To hide in .env file
             case "paradox":
-                thread_id = 1068691717605302422  # To hide in .env file
+                thread_id = self.PARADOX_THREAD_ID  # To hide in .env file
             case _:
                 raise ValueError("invalid clan name")
         return thread_id

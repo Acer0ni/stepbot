@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 intents = discord.Intents.all()
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
+GUILD_ID = os.getenv("GUILD_ID")
 
 
 bot = commands.Bot(command_prefix="/",intents =intents)
@@ -20,12 +21,12 @@ async def first_slash_command(interaction: discord.Interaction,clan:str):
 @bot.event
 async def on_ready():
 
-    await bot.tree.sync(guild=discord.Object(id=323528876770852864))
+    await bot.tree.sync(guild=discord.Object(id=GUILD_ID))
     print(f"{bot.user.name} has connect to Discord:\n")
 
-async def setup(bot):
+async def setup(bot:commands.bot):
     print("setup ran")
-    await Apply.setup(bot)
+    await bot.add_cog(Apply(bot),guild=discord.Object(id=GUILD_ID))
     await Ap.setup(bot)
 
 asyncio.run(setup(bot))
