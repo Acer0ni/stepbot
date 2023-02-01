@@ -116,7 +116,7 @@ class ApplyModal(discord.ui.Modal, title='Apply'):
         embed.add_field(name='Role', value=self.role.value, inline=False)
         embed.set_author(name=interaction.user,
                          icon_url=interaction.user.avatar.url if interaction.user.avatar else None)
-        # embed.set_footer(text=f"Application submitted for {self.clan_name}")
+        embed.set_footer(text=self.clan_name)
         embed.timestamp = date
         thread_id = self.get_clan_id_from_name()
         clan_thread = interaction.client.get_channel(thread_id)
