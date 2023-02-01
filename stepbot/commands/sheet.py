@@ -1,6 +1,6 @@
 import gspread
 
-gc = gspread.service_account(filename='C:/Users/Marc/Documents/Code/stepbot/credentials.json')
+gc = gspread.service_account(filename='credentials.json')
 def get_empty_row(worksheet,spreadsheet):
     # Authenticate and access the Google Spreadsheet
     sh = gc.open(worksheet)

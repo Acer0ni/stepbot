@@ -18,7 +18,7 @@ class Apply(commands.Cog):
         self.clan_name = clan_name.lower()
         if self.clan_name not in self.clan_names:
             #figure out making this a ephumerical embed later
-            await interaction.response.send_message("Invalid clan name")
+            await interaction.response.send_message(content="Invalid clan name",ephemeral=True)
             return
 
         await interaction.response.send_modal(ApplyModal(clan_name=self.clan_name))
@@ -50,8 +50,7 @@ class Apply(commands.Cog):
         elif reaction.emoji == "🕐":
             print(fields_values)
             await applicant.send(f'hey {name}, we are full right now in {embed.footer.text} but you have been added to the waiting list and we will get back to you when there is room.')
-            insert_to_sheet(fields_values,'stepbot',embed.footer.text)
-            # print(f'hey {reaction.message.mentions[0].name}, we are full right now in {self.clan_name} but you have been added to the waiting list and we will get back to you when there is room.')
+            insert_to_sheet(fields_values,'stepbot',embed.footer.text)          # print(f'hey {reaction.message.mentions[0].name}, we are full right now in {self.clan_name} but you have been added to the waiting list and we will get back to you when there is room.')
 
   
     

@@ -11,8 +11,8 @@ class Ap(commands.Cog):
     @app_commands.command(name="ap")
     async def cmd_ap(self,interaction:discord.Interaction):
         embed = discord.Embed()
-        embed.set_image(url = "https://discord.com/channels/1008278641660149860/1068022264219574282/1069720758433104023")
-        await interaction.response.send_message(embed=embed,ephemeral=False)
+        embed.set_image(url = "https://i.imgur.com/xWJT204.png")
+        await interaction.response.send_message(embed=embed,ephemeral=True)
 
 
 
