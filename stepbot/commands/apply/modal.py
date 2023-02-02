@@ -6,11 +6,13 @@ from dotenv import load_dotenv
 
 
 class ApplyModal(discord.ui.Modal, title='Apply'):
-    
+
     def __init__(self, clan_name, *args, **kwargs):
         self.clan_name = clan_name
         self.ABNORMAL_THREAD_ID = int(os.getenv("ABNORMAL_THREAD_ID"))
         self.PARADOX_THREAD_ID = int(os.getenv("PARADOX_THREAD_ID"))
+        self.ANOMALY_THREAD_ID = int(os.getenv("ANOMALY_THREAD_ID"))
+        self.PARANORMAL_THREAD_ID = int(os.getenv("PARANORMAL_THREAD_ID"))
         super().__init__(*args, **kwargs)
 
     # This is a short, single-line input, where user can submit the number of players applying
@@ -19,7 +21,7 @@ class ApplyModal(discord.ui.Modal, title='Apply'):
         placeholder='1',
         style=discord.TextStyle.short,
         required=True,
-        max_length=1,   
+        max_length=1,
     )
     # This is a long, multi-line input, where user can submit the IGN of the player(s) applying
     ign = discord.ui.TextInput(
@@ -45,17 +47,20 @@ class ApplyModal(discord.ui.Modal, title='Apply'):
         required=True,
         max_length=100,
     )
-   
-
 
     # get the thread id based on the clan name passed in
+
     def get_clan_id_from_name(self):
         thread_id = None
         match self.clan_name:
             case "abnormal":
-                thread_id = self.ABNORMAL_THREAD_ID  # To hide in .env file
+                thread_id = self.ABNORMAL_THREAD_ID
             case "paradox":
-                thread_id = self.PARADOX_THREAD_ID  # To hide in .env file
+                thread_id = self.PARADOX_THREAD_ID
+            case "anomaly":
+                thread_id = self.ANOMALY_THREAD_ID
+            case "paranormal":
+                thread_id = self.PARANORMAL_THREAD_ID
             case _:
                 raise ValueError("invalid clan name")
         return thread_id
@@ -92,10 +97,11 @@ class ApplyModal(discord.ui.Modal, title='Apply'):
                 raise ValueError(
                     "please input the correct number of cp values separated by a comma")
 
-    def validate_on_submit(self): # validate all the fields
-        for value in ["number", "name", "cp", "role"]: # loop through all the fields
-            if validator := getattr(self, f"validate_{value}", None): # get the validator for the field
-                if not callable(validator): # check if the validator is callable
+    def validate_on_submit(self):  # validate all the fields
+        for value in ["number", "name", "cp", "role"]:  # loop through all the fields
+            # get the validator for the field
+            if validator := getattr(self, f"validate_{value}", None):
+                if not callable(validator):  # check if the validator is callable
                     raise RuntimeError(
                         f"validator attribute found but not callable {validator}")
                 validator()
@@ -103,7 +109,6 @@ class ApplyModal(discord.ui.Modal, title='Apply'):
     async def on_submit(self, interaction: discord.Interaction):
         self.validate_on_submit()
         date = datetime.datetime.now()
-        
 
         embed = discord.Embed(title='Application Submitted',
                               description=f'IGN: {self.number.value}')
@@ -115,31 +120,21 @@ class ApplyModal(discord.ui.Modal, title='Apply'):
         embed.set_author(name=interaction.user,
                          icon_url=interaction.user.avatar.url if interaction.user.avatar else None)
         embed.set_footer(text=self.clan_name)
+
         embed.timestamp = date
         thread_id = self.get_clan_id_from_name()
         clan_thread = interaction.client.get_channel(thread_id)
         msg = await clan_thread.send(embed=embed)
+
         await msg.add_reaction("✅")
         await msg.add_reaction("❌")
         await msg.add_reaction("🕐")
-        
-        #delete this line after testing
+
+        # delete this line after testing
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
-        
     async def on_error(self, interaction: discord.Interaction, error: Exception) -> None:
         await interaction.response.send_message(error, ephemeral=True)
 
         # Make sure we know what the error actually is
         traceback.print_exception(type(error), error, error.__traceback__)
-
-
-    # def get_fields_values(self,id):
-    #     fields = {}
-    #     #i need to get the values of the fields from an embed with the id
-    #     embed = discord.Embed(id)
-    #     fields['number'] = embed.fields[0].value
-    #     fields['name'] = embed.fields[1].value
-    #     fields['cp'] = embed.fields[2].value
-    #     fields['role'] = embed.fields[3].value
-    #     return fields
