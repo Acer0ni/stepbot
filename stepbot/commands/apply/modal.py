@@ -5,7 +5,7 @@ import os
 from dotenv import load_dotenv
 
 
-class ApplyModal(discord.ui.Modal, title='Apply'):
+class ApplyModal(discord.ui.Modal, title='Application form'):
 
     def __init__(self, clan_name, *args, **kwargs):
         self.clan_name = clan_name
@@ -78,13 +78,23 @@ class ApplyModal(discord.ui.Modal, title='Apply'):
     def validate_name(self):
         num = int(self.number.value)  # get the number of players applying
         names = self.ign.value.split(",")  # split the names by comma
+        roles = self.role.value.split(",")
+
         if len(names) != num:  # check if the number of names entered is equal to the number of players applying
             raise ValueError(
                 "please input the correct number of names separated by a comma")
+        if len(roles) != num:  # check if the number of names entered is equal to the number of players applying
+            raise ValueError(
+                "please input the correct number of classes separated by a comma")
+        
         for ign in names:
             if len(ign.strip()) < 1:  # check if the names are not empty
                 raise ValueError(
                     "please input the correct number of names separated by a comma")
+        for role in roles:
+            if len(role.strip()) < 1:  # check if the names are not empty
+                raise ValueError(
+                    "please input the correct number of classes separated by a comma")
 
     def validate_cp(self):  # same as validate_name
         num = int(self.number.value)
@@ -110,15 +120,12 @@ class ApplyModal(discord.ui.Modal, title='Apply'):
         self.validate_on_submit()
         date = datetime.datetime.now()
 
-        embed = discord.Embed(title='Application Submitted',
-                              description=f'IGN: {self.number.value}')
-        embed.add_field(name='Number',
-                        value=self.number.value, inline=False)
+        embed = discord.Embed(title='Application Submitted')
+        embed.add_field(name='Number', value=self.number.value, inline=False)
         embed.add_field(name='IGN', value=self.ign.value, inline=False)
         embed.add_field(name='CP', value=self.cp.value, inline=False)
         embed.add_field(name='Role', value=self.role.value, inline=False)
-        embed.set_author(name=interaction.user,
-                         icon_url=interaction.user.avatar.url if interaction.user.avatar else None)
+        embed.set_author(name=interaction.user,icon_url=interaction.user.avatar.url if interaction.user.avatar else None)
         embed.set_footer(text=self.clan_name)
 
         embed.timestamp = date

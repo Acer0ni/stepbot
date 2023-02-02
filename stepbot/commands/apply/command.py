@@ -3,9 +3,7 @@ from discord import app_commands
 from dotenv import load_dotenv
 from stepbot.commands.apply.modal import ApplyModal
 from stepbot.commands.sheet import *
-import gspread
 import os
-
 import discord
 
 

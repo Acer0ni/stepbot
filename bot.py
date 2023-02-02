@@ -3,6 +3,7 @@ import os
 import asyncio
 from stepbot.commands.apply.command import Apply
 from stepbot.commands.ap.command import Ap
+from stepbot.commands.lft.command import Lft
 from discord.ext import commands
 from dotenv import load_dotenv
 
@@ -28,6 +29,7 @@ async def setup(bot:commands.bot):
     print("setup ran")
     await bot.add_cog(Apply(bot),guild=discord.Object(id=GUILD_ID))
     await Ap.setup(bot)
+    await Lft.setup(bot)
 
 asyncio.run(setup(bot))
 bot.run(TOKEN)
