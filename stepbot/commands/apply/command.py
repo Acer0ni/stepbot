@@ -17,7 +17,7 @@ class Apply(commands.Cog):
         self.bot = bot
         self.clan_names = ["abnormal", "paradox", "anomaly", "paranormal"]
         self.GUILD_ID = int(os.getenv("GUILD_ID"))
-
+        
     @app_commands.command(name="apply")
     async def cmd_apply(self, interaction: discord.Interaction, clan_name: str):
         """
@@ -32,7 +32,8 @@ class Apply(commands.Cog):
 
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction: discord.Reaction, user: discord.User):
-
+        if reaction.message.channel.id not in [self.ABNORMAL_THREAD_ID, self.PARADOX_THREAD_ID, self.ANOMALY_THREAD_ID, self.PARANORMAL_THREAD_ID]:
+            return
         embed = reaction.message.embeds[0]
         date = embed.timestamp.date()
         guild = self.bot.get_guild(self.GUILD_ID)
