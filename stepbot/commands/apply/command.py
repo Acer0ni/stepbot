@@ -32,6 +32,7 @@ class Apply(commands.Cog):
 
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction: discord.Reaction, user: discord.User):
+
         embed = reaction.message.embeds[0]
         date = embed.timestamp.date()
         guild = self.bot.get_guild(self.GUILD_ID)
@@ -39,20 +40,23 @@ class Apply(commands.Cog):
         mention_id = reaction.message.guild.get_member_named(
             embed.author.name).mention
         fields_values = {}
+
         for field in embed.fields:
             fields_values[field.name] = field.value
         fields_values['discord'] = embed.author.name
         fields_values['date'] = date.strftime("%m/%d/%Y")
         name = fields_values["discord"]
         applicant = guild.get_member_named(name)
+
         if user.id == self.bot.user.id:
             return
         if reaction.message.author.id != self.bot.user.id:
             return
         if "tester" not in [role.name.lower() for role in user.roles]:
-            print("unauthorized")
-            reaction.message.channel.send(
+            print(f'{name}as reacted to a message he is not authorized to react to')
+            await reaction.message.channel.send(
                 f"{name} you are not authorized to react to this message")
+            await reaction.remove(user)
             return
         if reaction.emoji == "✅":
             await applicant.send(f" Accepted you can now apply to {embed.footer.text}. Please apply in game {mention_id}!")

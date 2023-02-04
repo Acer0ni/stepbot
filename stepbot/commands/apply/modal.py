@@ -96,6 +96,12 @@ class ApplyModal(discord.ui.Modal, title='Apply'):
             if len(cp.strip()) < 1:  # check if the names are not empty
                 raise ValueError(
                     "please input the correct number of cp values separated by a comma")
+        for cp in cps:
+            try:
+                int(cp.strip())  # check if the cp values are numbers
+            except ValueError:
+                raise ValueError(
+                    "please input only numbers for cp values separated by a comma")
 
     def validate_on_submit(self):  # validate all the fields
         for value in ["number", "name", "cp", "role"]:  # loop through all the fields
@@ -111,12 +117,12 @@ class ApplyModal(discord.ui.Modal, title='Apply'):
         date = datetime.datetime.now()
 
         embed = discord.Embed(title='Application Submitted',
-                              description=f'IGN: {self.number.value}')
+                              description=f'application for : {self.clan_name}')
         embed.add_field(name='Number',
                         value=self.number.value, inline=False)
-        embed.add_field(name='IGN', value=self.ign.value, inline=False)
-        embed.add_field(name='CP', value=self.cp.value, inline=False)
-        embed.add_field(name='Role', value=self.role.value, inline=False)
+        embed.add_field(name='IGN', value=self.ign.value.strip(), inline=False)
+        embed.add_field(name='CP', value=self.cp.value.strip(), inline=False)
+        embed.add_field(name='Role', value=self.role.value.strip(), inline=False)
         embed.set_author(name=interaction.user,
                          icon_url=interaction.user.avatar.url if interaction.user.avatar else None)
         embed.set_footer(text=self.clan_name)
@@ -130,11 +136,12 @@ class ApplyModal(discord.ui.Modal, title='Apply'):
         await msg.add_reaction("❌")
         await msg.add_reaction("🕐")
 
+        print(f'{interaction.user} submitted an application for {self.clan_name} at {date}')
+
         # delete this line after testing
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
     async def on_error(self, interaction: discord.Interaction, error: Exception) -> None:
         await interaction.response.send_message(error, ephemeral=True)
-
-        # Make sure we know what the error actually is
         traceback.print_exception(type(error), error, error.__traceback__)
+

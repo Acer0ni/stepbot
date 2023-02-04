@@ -27,7 +27,7 @@ def insert_to_sheet(dictionary, worksheet,spreadsheet):
 
     for key, value in dictionary.items():
         try:
-            values = value.split(',')
+            values = value.strip().split(',')
         except AttributeError:
             pass
         else:
