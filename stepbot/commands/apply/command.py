@@ -58,12 +58,17 @@ class Apply(commands.Cog):
                 f"{name} you are not authorized to react to this message")
             await reaction.remove(user)
             return
+        
         if reaction.emoji == "✅":
             await applicant.send(f" Accepted you can now apply to {embed.footer.text}. Please apply in game {mention_id}!")
             await channel.send(f"{mention_id} you have been accepted to {embed.footer.text}, please apply in game.")
+            print(f'{reaction.users} has accepted {name} to {embed.footer.text} at {date.strftime("%m/%d/%Y")}')
+
         elif reaction.emoji == "❌":
             await applicant.send(f"Thanks you for considering {embed.footer.text}, but your application as been rejected {mention_id}")
             await channel.send(f"Thanks you for considering {embed.footer.text}, but your application as been rejected {mention_id}")
+            print(f'{reaction.users} has rejected {name} from {embed.footer.text} at {date.strftime("%m/%d/%Y")}')
+
         elif reaction.emoji == "🕐":
             await applicant.send(f'hey {mention_id}, we are full right now in {embed.footer.text} but you have been added to the waiting list and we will get back to you when there is room.')
             await channel.send(f'hey {mention_id}, we are full right now in {embed.footer.text} but you have been added to the waiting list and we will get back to you when there is room.')
