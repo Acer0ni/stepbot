@@ -6,8 +6,6 @@ name = "pypi"
 [packages]
 "discord.py" = "*"
 python-dotenv = "*"
-google-api-python-client = "*"
-pycord = "*"
 gspread = "*"
 
 [dev-packages]

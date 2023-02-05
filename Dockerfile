@@ -1,4 +1,4 @@
-FROM python:3.10.7
+FROM python:3.10.7-slim-bullseye
 RUN pip install pipenv
 WORKDIR /app/
 COPY Pipfile \
@@ -7,6 +7,6 @@ COPY Pipfile \
 RUN pipenv sync
 ADD /stepbot stepbot/
 COPY bot.py \
-    credentials.json \
     /app/
+
 CMD pipenv run python3 bot.py

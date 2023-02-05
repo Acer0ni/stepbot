@@ -1,0 +1,18 @@
+# fly.toml file generated for stepbot on 2023-02-04T16:02:07-08:00
+
+app = "stepbot"
+kill_signal = "SIGINT"
+kill_timeout = 5
+processes = []
+
+[env]
+GUILD_ID = "323528876770852864"
+ABNORMAL_THREAD_ID = "1068628252974911620"
+PARADOX_THREAD_ID = "1068691717605302422"
+ANOMALY_THREAD_ID = "1070513677779861524"
+PARANORMAL_THREAD_ID = "1070513780842299502"
+GOOGLE_USE_ENV = "TRUE"
+[experimental]
+auto_rollback = true
+
+[[services]]

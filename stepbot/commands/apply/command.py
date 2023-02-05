@@ -13,10 +13,13 @@ class Apply(commands.Cog):
     clan_name = None
 
     def __init__(self, bot: commands.Bot):
-
         self.bot = bot
         self.clan_names = ["abnormal", "paradox", "anomaly", "paranormal"]
         self.GUILD_ID = int(os.getenv("GUILD_ID"))
+        self.ABNORMAL_THREAD_ID = int(os.getenv("ABNORMAL_THREAD_ID"))
+        self.PARADOX_THREAD_ID = int(os.getenv("PARADOX_THREAD_ID"))
+        self.ANOMALY_THREAD_ID = int(os.getenv("ANOMALY_THREAD_ID"))
+        self.PARANORMAL_THREAD_ID = int(os.getenv("PARANORMAL_THREAD_ID"))
         
     @app_commands.command(name="apply")
     async def cmd_apply(self, interaction: discord.Interaction, clan_name: str):
@@ -32,6 +35,10 @@ class Apply(commands.Cog):
 
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction: discord.Reaction, user: discord.User):
+        if user.id == self.bot.user.id:
+            return
+        if reaction.message.author.id != self.bot.user.id:
+            return    
         if reaction.message.channel.id not in [self.ABNORMAL_THREAD_ID, self.PARADOX_THREAD_ID, self.ANOMALY_THREAD_ID, self.PARANORMAL_THREAD_ID]:
             return
         embed = reaction.message.embeds[0]
@@ -49,10 +56,8 @@ class Apply(commands.Cog):
         name = fields_values["discord"]
         applicant = guild.get_member_named(name)
 
-        if user.id == self.bot.user.id:
-            return
-        if reaction.message.author.id != self.bot.user.id:
-            return
+
+      
         if "tester" not in [role.name.lower() for role in user.roles]:
             print(f'{name}as reacted to a message he is not authorized to react to')
             await reaction.message.channel.send(
