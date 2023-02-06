@@ -79,23 +79,19 @@ class ApplyModal(discord.ui.Modal, title='Apply'):
         num = int(self.number.value)  # get the number of players applying
         names = self.ign.value.split(",")  # split the names by comma
         if len(names) != num:  # check if the number of names entered is equal to the number of players applying
-            raise ValueError(
-                "please input the correct number of names separated by a comma")
+            raise ValueError("please input the correct number of names separated by a comma")
         for ign in names:
             if len(ign.strip()) < 1:  # check if the names are not empty
-                raise ValueError(
-                    "please input the correct number of names separated by a comma")
+                raise ValueError("please input the correct number of names separated by a comma")
 
     def validate_cp(self):  # same as validate_name
         num = int(self.number.value)
         cps = self.cp.value.split(",")
         if len(cps) != num:
-            raise ValueError(
-                "please input the correct number of cp values separated by a comma")
+            raise ValueError( "please input the correct number of cp values separated by a comma")
         for cp in cps:
             if len(cp.strip()) < 1:  # check if the names are not empty
-                raise ValueError(
-                    "please input the correct number of cp values separated by a comma")
+                raise ValueError("please input the correct number of cp values separated by a comma")
         for cp in cps:
             try:
                 int(cp.strip())  # check if the cp values are numbers
@@ -103,6 +99,12 @@ class ApplyModal(discord.ui.Modal, title='Apply'):
                 raise ValueError(
                     "please input only numbers for cp values separated by a comma")
 
+    def validate_role(self):
+        num = int(self.number.value)
+        roles = self.role.value.split(",")
+        if len(roles) != num:
+            raise ValueError("please input the correct number of roles seperated by comma")
+        
     def validate_on_submit(self):  # validate all the fields
         for value in ["number", "name", "cp", "role"]:  # loop through all the fields
             # get the validator for the field
