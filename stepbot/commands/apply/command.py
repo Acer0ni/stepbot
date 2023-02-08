@@ -53,28 +53,45 @@ class Apply(commands.Cog):
         for field in embed.fields:
             fields_values[field.name] = field.value
         fields_values['discord'] = embed.author.name
-        fields_values['date'] = date.strftime("%m/%d/%Y")
+        fields_values['date'] = date.strftime("%d/%m/%Y")
         name = fields_values["discord"]
         applicant = guild.get_member_named(name)
         if self.LEADER_ROLE not in [role.name.lower() for role in user.roles]:
             print(f'{name} has reacted to a message he is not authorized to react to')
-            await reaction.message.channel.send(
-                f"{name} You are not authorized to react to this message")
+
             await reaction.remove(user)
             return
         
         if reaction.emoji == "✅":
-            await applicant.send(f" Accepted. You can now apply to {embed.footer.text}. Please apply in game {mention_id}!")
-            await channel.send(f"{mention_id} you have been accepted to {embed.footer.text}, please apply in game.")
+            try:
+                await applicant.send(f" Accepted. You can now apply to {embed.footer.text}. Please apply in game {mention_id}!")
+            except discord.Forbidden:
+                await channel.send(f"{mention_id} you have been accepted to {embed.footer.text}, please apply in game.")
+                print("forbidden exception")
+            except discord.HTTPException:
+                await channel.send(f"{mention_id} you have been accepted to {embed.footer.text}, please apply in game.")
+                print("http exception")
             print(f'{reaction.users} has accepted {name} to {embed.footer.text} at {date.strftime("%m/%d/%Y")}')
 
         elif reaction.emoji == "❌":
-            await applicant.send(f"Thank you for considering {embed.footer.text}, but your application as been rejected. {mention_id}")
-            await channel.send(f"Thank you for considering {embed.footer.text}, but your application as been rejected. {mention_id}")
+            try:
+                await applicant.send(f"Thank you for considering {embed.footer.text}, but your application as been rejected. {mention_id}")
+            except discord.Forbidden:
+                await channel.send(f"Thank you for considering {embed.footer.text}, but your application as been rejected. {mention_id}")
+                print("forbidden exception")
+            except discord.HTTPException:
+                await channel.send(f"{mention_id} you have been accepted to {embed.footer.text}, please apply in game.")
+                print("http exception")
             print(f'{reaction.users} has rejected {name} from {embed.footer.text} at {date.strftime("%m/%d/%Y")}')
 
         elif reaction.emoji == "🕐":
-            await applicant.send(f'Hey {mention_id}, we are full right now in {embed.footer.text}, you have been added to the waiting list, and we will get back to you when there is room.')
-            await channel.send(f'Hey {mention_id}, we are full right now in {embed.footer.text}, you have been added to the waiting list, and we will get back to you when there is room.')
+            try:
+                await applicant.send(f'Hey {mention_id}, we are full right now in {embed.footer.text}, you have been added to the waiting list, and we will get back to you when there is room.')
+            except discord.Forbidden:
+                await channel.send(f'Hey {mention_id}, we are full right now in {embed.footer.text}, you have been added to the waiting list, and we will get back to you when there is room.')
+                print("forbidden exception")
+            except discord.Forbidden:
+                await channel.send(f'Hey {mention_id}, we are full right now in {embed.footer.text}, you have been added to the waiting list, and we will get back to you when there is room.')
+                print("http exception")
             print(f"Inserting data into {embed.footer.text} waiting list")
             insert_to_sheet(fields_values, 'stepbot', embed.footer.text)

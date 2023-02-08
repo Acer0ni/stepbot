@@ -133,7 +133,7 @@ class ApplyModal(discord.ui.Modal, title='Apply'):
         thread_id = self.get_clan_id_from_name()
         clan_thread = interaction.client.get_channel(thread_id)
         msg = await clan_thread.send(embed=embed)
-
+        await clan_thread.send(interaction.user.mention)
         await msg.add_reaction("✅")
         await msg.add_reaction("❌")
         await msg.add_reaction("🕐")
@@ -142,6 +142,7 @@ class ApplyModal(discord.ui.Modal, title='Apply'):
 
         # delete this line after testing
         await interaction.response.send_message(embed=embed, ephemeral=True)
+        
 
     async def on_error(self, interaction: discord.Interaction, error: Exception) -> None:
         await interaction.response.send_message(error, ephemeral=True)

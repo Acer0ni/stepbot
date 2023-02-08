@@ -26,7 +26,7 @@ async def setup(bot:commands.bot):
     print("setup ran")
     await bot.add_cog(Apply(bot),guild=discord.Object(id=GUILD_ID))
     await bot.add_cog(AdminCommands(bot),guild=discord.Object(id=GUILD_ID))
-    await Ap.setup(bot)
+    await bot.add_cog(Ap(bot),guild = discord.Object(id=GUILD_ID))
 
 asyncio.run(setup(bot))
 bot.run(TOKEN)
