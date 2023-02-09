@@ -58,13 +58,13 @@ class Apply(commands.Cog):
         applicant = guild.get_member_named(name)
         if self.LEADER_ROLE not in [role.name.lower() for role in user.roles]:
             print(f'{name} has reacted to a message he is not authorized to react to')
-
             await reaction.remove(user)
             return
         
         if reaction.emoji == "✅":
             try:
                 await applicant.send(f" Accepted. You can now apply to {embed.footer.text}. Please apply in game {mention_id}!")
+                await channel.send(f"{mention_id} you have been accepted to {embed.footer.text}, please apply in game.")
             except discord.Forbidden:
                 await channel.send(f"{mention_id} you have been accepted to {embed.footer.text}, please apply in game.")
                 print("forbidden exception")
@@ -76,6 +76,7 @@ class Apply(commands.Cog):
         elif reaction.emoji == "❌":
             try:
                 await applicant.send(f"Thank you for considering {embed.footer.text}, but your application as been rejected. {mention_id}")
+                await channel.send(f"Thank you for considering {embed.footer.text}, but your application as been rejected. {mention_id}")
             except discord.Forbidden:
                 await channel.send(f"Thank you for considering {embed.footer.text}, but your application as been rejected. {mention_id}")
                 print("forbidden exception")
@@ -87,10 +88,11 @@ class Apply(commands.Cog):
         elif reaction.emoji == "🕐":
             try:
                 await applicant.send(f'Hey {mention_id}, we are full right now in {embed.footer.text}, you have been added to the waiting list, and we will get back to you when there is room.')
+                await channel.send(f'Hey {mention_id}, we are full right now in {embed.footer.text}, you have been added to the waiting list, and we will get back to you when there is room.')
             except discord.Forbidden:
                 await channel.send(f'Hey {mention_id}, we are full right now in {embed.footer.text}, you have been added to the waiting list, and we will get back to you when there is room.')
                 print("forbidden exception")
-            except discord.Forbidden:
+            except discord.HTTPException:
                 await channel.send(f'Hey {mention_id}, we are full right now in {embed.footer.text}, you have been added to the waiting list, and we will get back to you when there is room.')
                 print("http exception")
             print(f"Inserting data into {embed.footer.text} waiting list")
