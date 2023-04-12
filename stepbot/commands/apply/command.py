@@ -47,7 +47,7 @@ class Apply(commands.Cog):
             return
         if reaction.message.author.id != self.bot.user.id:
             return
-        if "tester" not in [role.name.lower() for role in user.roles]:
+        if "step-bot" not in [role.name.lower() for role in user.roles]:
             print("unauthorized")
             reaction.message.channel.send(
                 f"{name} you are not authorized to react to this message")
