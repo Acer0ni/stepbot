@@ -21,7 +21,8 @@ class dm(commands.Cog):
         for member in role_obj.members:
             try:
                 # send a direct message to the member
-                await member.send("Fill this quiz")
+                await member.send("Hello, can you please fill out this form? This is a skill hassement form for YGG.")
+                await member.send("https://forms.gle/cCodGvdmx99LrVhg6")
             except:
                 # catch any errors and print them
                 print(f"Failed to send a message to {member.name}#{member.discriminator}.")
