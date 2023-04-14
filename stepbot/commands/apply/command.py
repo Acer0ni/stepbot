@@ -39,18 +39,19 @@ class Apply(commands.Cog):
 
         channel = self.bot.get_channel(payload.channel_id)
         message = await channel.fetch_message(payload.message_id)
+
         if message.author.id != self.bot.user.id:
             return
+
         if message.channel.id not in [self.ABNORMAL_THREAD_ID, self.PARADOX_THREAD_ID, self.ANOMALY_THREAD_ID, self.PARANORMAL_THREAD_ID]:
             return
-        # Find the corresponding reaction object
-        reaction = None
-        for r in message.reactions:
-            if r.emoji == payload.emoji:
-                reaction = r
-                break
-        if reaction is None:
-            return
+
+        user = self.bot.get_user(payload.user_id)
+
+        # Create a discord.Reaction object
+        emoji = payload.emoji
+        reaction = discord.Reaction(message=message, data={"emoji": {"name": emoji.name, "id": emoji.id}}, me=False)
+        
         # Fetch the user who added the reaction
         user = self.bot.get_user(payload.user_id)
         embed = reaction.message.embeds[0]
