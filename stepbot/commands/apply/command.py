@@ -79,6 +79,7 @@ class Apply(commands.Cog):
             try:
                 await applicant.send(f" Accepted. You can now apply to {embed.footer.text}. Please apply in game {mention_id}!")
                 await channel.send(f"{mention_id} you have been accepted to {embed.footer.text}, please apply in game.")
+                await reaction.message.delete()
             except discord.Forbidden:
                 await channel.send(f"{mention_id} you have been accepted to {embed.footer.text}, please apply in game.")
                 print("forbidden exception")
