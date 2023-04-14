@@ -33,13 +33,26 @@ class Apply(commands.Cog):
         await interaction.response.send_modal(ApplyModal(clan_name=self.clan_name))
 
     @commands.Cog.listener()
-    async def on_reaction_add(self, reaction: discord.Reaction, user: discord.User):
-        if user.id == self.bot.user.id:
+    async def on_raw_reaction_add(self, payload: discord.RawReactionActionEvent):
+        if payload.user_id == self.bot.user.id:
             return
-        if reaction.message.author.id != self.bot.user.id:
-            return    
-        if reaction.message.channel.id not in [self.ABNORMAL_THREAD_ID, self.PARADOX_THREAD_ID, self.ANOMALY_THREAD_ID, self.PARANORMAL_THREAD_ID]:
+
+        channel = self.bot.get_channel(payload.channel_id)
+        message = await channel.fetch_message(payload.message_id)
+        if message.author.id != self.bot.user.id:
             return
+        if message.channel.id not in [self.ABNORMAL_THREAD_ID, self.PARADOX_THREAD_ID, self.ANOMALY_THREAD_ID, self.PARANORMAL_THREAD_ID]:
+            return
+        # Find the corresponding reaction object
+        reaction = None
+        for r in message.reactions:
+            if r.emoji == payload.emoji:
+                reaction = r
+                break
+        if reaction is None:
+            return
+        # Fetch the user who added the reaction
+        user = self.bot.get_user(payload.user_id)
         embed = reaction.message.embeds[0]
         date = embed.timestamp.date()
         guild = self.bot.get_guild(self.GUILD_ID)
