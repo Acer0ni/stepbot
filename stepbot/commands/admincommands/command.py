@@ -19,4 +19,6 @@ class AdminCommands(commands.Cog):
             await ctx.send("command not authorized")
         else:
             await self.bot.tree.sync(guild=discord.Object(id=self.GUILD_ID))
+            await ctx.send("tree synced")
+            await ctx.user.send("tree synced")
             print("tree synced")

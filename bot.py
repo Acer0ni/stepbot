@@ -12,6 +12,7 @@ from discord.ext import commands
 from dotenv import load_dotenv
 
 intents = discord.Intents.all()
+
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
 GUILD_ID = os.getenv("GUILD_ID")
@@ -19,12 +20,31 @@ GUILD_ID = os.getenv("GUILD_ID")
 
 bot = commands.Bot(command_prefix="/",intents =intents)
 
+async def heartbeat():
+    while True:
+        await bot.ws.send_hearbeat()
+        await asyncio.sleep(240)
 
 @bot.event
 async def on_ready():
-
-    
     print(f"{bot.user.name} has connect to Discord:\n")
+    bot.loop.create_task(heartbeat())
+
+@bot.event
+async def on_disconnect():
+    print(f'{bot.user.name} has disconnected from Discord:\n')
+
+@bot.event
+async def on_resumed():
+    print(f'{bot.user.name} has resumed connection to Discord:\n')
+
+@bot.event
+async def on_command_error(ctx,error):
+    if isinstance(error,commands.CommandNotFound):
+        return
+    print(f'An error has occured when running {ctx.command.name}:\nError: {error}')   
+
+
 
 async def setup(bot:commands.bot):
     print("setup ran")
