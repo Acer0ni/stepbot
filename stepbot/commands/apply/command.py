@@ -50,7 +50,8 @@ class Apply(commands.Cog):
 
         # Create a discord.Reaction object
         emoji = payload.emoji
-        reaction = discord.Reaction(message=message, data={"emoji": {"name": emoji.name, "id": emoji.id}})
+        reaction = discord.Reaction(message=message, data={"emoji": {"name": emoji.name, "id": emoji.id}, "me": False})
+
 
         # Fetch the user who added the reaction
         user = self.bot.get_user(payload.user_id)
