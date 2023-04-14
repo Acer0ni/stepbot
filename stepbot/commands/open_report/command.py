@@ -10,7 +10,8 @@ class report(commands.Cog):
     @app_commands.command(name="report")
     async def cmd_apply(self, interaction: discord.Interaction, message: str, message_link: str):
         guild = interaction.guild
-        leader_role = discord.utils.get(guild.roles, id=os.getenv("CONFLICT_ROLE_ID"))
+        leader_role = discord.utils.get(guild.roles, id=int(os.getenv("CONFLICT_ROLE_ID")))
+
         overwrite = {
             guild.default_role: discord.PermissionOverwrite(read_messages=False),
             leader_role: discord.PermissionOverwrite(read_messages=True),
