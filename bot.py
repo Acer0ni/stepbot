@@ -22,7 +22,7 @@ bot = commands.Bot(command_prefix="/",intents =intents)
 
 async def heartbeat():
     while True:
-        await bot.ws.send_hearbeat()
+        await bot.ws.send_heartbeat()
         await asyncio.sleep(240)
 
 @bot.event
