@@ -46,7 +46,7 @@ class Apply(commands.Cog):
             return
 
         if message.channel.id not in [self.ABNORMAL_THREAD_ID, self.PARADOX_THREAD_ID, self.ANOMALY_THREAD_ID, self.PARANORMAL_THREAD_ID]:
-            return
+            return    
 
         user = self.bot.get_user(payload.user_id)
 
@@ -54,8 +54,11 @@ class Apply(commands.Cog):
         emoji = payload.emoji
         reaction = discord.Reaction(message=message, data={"emoji": {"name": emoji.name, "id": emoji.id}, "me": False})
 
-        def has_role(member, role_name):
-            return any(role.name.lower() == role_name.lower() for role in member.roles)
+        if self.LEADER_ROLE not in [role.name.lower() for role in member.roles]:
+            reaction.clear()
+            print((f"{member.mention} you are not allowed to use this command"))
+            return
+
 
         # Fetch the user who added the reaction
         user = self.bot.get_user(payload.user_id)
@@ -73,10 +76,6 @@ class Apply(commands.Cog):
         name = fields_values["discord"]
         applicant = guild.get_member_named(name)
         
-        if not has_role(member, self.LEADER_ROLE):
-                print(f'{name} has reacted to a message he is not authorized to react to')
-                await reaction.remove(user)
-                return
         
         if reaction.emoji == "✅":
             try:
