@@ -83,32 +83,30 @@ class ApplyModal(discord.ui.Modal, title='Application form'):
         if len(names) != num:  # check if the number of names entered is equal to the number of players applying
             raise ValueError(
                 "please input the correct number of names separated by a comma")
+        if len(roles) != num:  # check if the number of names entered is equal to the number of players applying
+            raise ValueError(
+                "please input the correct number of classes separated by a comma")
+        
         for ign in names:
             if len(ign.strip()) < 1:  # check if the names are not empty
                 raise ValueError(
                     "please input the correct number of names separated by a comma")
+        for role in roles:
+            if len(role.strip()) < 1:  # check if the names are not empty
+                raise ValueError(
+                    "please input the correct number of classes separated by a comma")
 
     def validate_cp(self):  # same as validate_name
         num = int(self.number.value)
         cps = self.cp.value.split(",")
         if len(cps) != num:
-            raise ValueError( "please input the correct number of cp values separated by a comma")
+            raise ValueError(
+                "please input the correct number of cp values separated by a comma")
         for cp in cps:
             if len(cp.strip()) < 1:  # check if the names are not empty
-                raise ValueError("please input the correct number of cp values separated by a comma")
-        for cp in cps:
-            try:
-                int(cp.strip())  # check if the cp values are numbers
-            except ValueError:
                 raise ValueError(
-                    "please input only numbers for cp values separated by a comma")
+                    "please input the correct number of cp values separated by a comma")
 
-    def validate_role(self):
-        num = int(self.number.value)
-        roles = self.role.value.split(",")
-        if len(roles) != num:
-            raise ValueError("please input the correct number of roles seperated by comma")
-        
     def validate_on_submit(self):  # validate all the fields
         for value in ["number", "name", "cp", "role"]:  # loop through all the fields
             # get the validator for the field
@@ -119,7 +117,9 @@ class ApplyModal(discord.ui.Modal, title='Application form'):
                 validator()
 
     async def on_submit(self, interaction: discord.Interaction):
+        print(f"Validating {interaction.user} application")
         self.validate_on_submit()
+        print(f"application of {interaction.user} is ")
         date = datetime.datetime.now()
 
         embed = discord.Embed(title='Application Submitted',
@@ -129,26 +129,23 @@ class ApplyModal(discord.ui.Modal, title='Application form'):
         embed.add_field(name='IGN', value=self.ign.value, inline=False)
         embed.add_field(name='CP', value=self.cp.value, inline=False)
         embed.add_field(name='Role', value=self.role.value, inline=False)
-        embed.set_author(name=interaction.user,
-                         icon_url=interaction.user.avatar.url if interaction.user.avatar else None)
+        embed.set_author(name=interaction.user,icon_url=interaction.user.avatar.url if interaction.user.avatar else None)
         embed.set_footer(text=self.clan_name)
 
         embed.timestamp = date
         thread_id = self.get_clan_id_from_name()
         clan_thread = interaction.client.get_channel(thread_id)
         msg = await clan_thread.send(embed=embed)
-        await clan_thread.send(interaction.user.mention)
+
         await msg.add_reaction("✅")
         await msg.add_reaction("❌")
         await msg.add_reaction("🕐")
 
-        print(f'{interaction.user} submitted an application for {self.clan_name} at {date}')
-
         # delete this line after testing
         await interaction.response.send_message(embed=embed, ephemeral=True)
-        
 
     async def on_error(self, interaction: discord.Interaction, error: Exception) -> None:
         await interaction.response.send_message(error, ephemeral=True)
-        traceback.print_exception(type(error), error, error.__traceback__)
 
+        # Make sure we know what the error actually is
+        traceback.print_exception(type(error), error, error.__traceback__)

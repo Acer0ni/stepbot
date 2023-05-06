@@ -70,7 +70,7 @@ class Apply(commands.Cog):
         name = fields_values["discord"]
         applicant = guild.get_member_named(name)
         member = guild.get_member(user.id)
-        if self.LEADER_ROLE not in [role.name.lower() for role in member.roles]:
+        if self.LEADER_ROLE not in [role.name.lower() for role in payload.member.roles]:
             print(f'{name} has reacted to a message he is not authorized to react to')
             await reaction.remove(user)
             return
