@@ -39,6 +39,8 @@ class Apply(commands.Cog):
 
         channel = self.bot.get_channel(payload.channel_id)
         message = await channel.fetch_message(payload.message_id)
+        guild = self.bot.get_guild(payload.guild_id)
+        member = guild.get_member(payload.user_id)
 
         if message.author.id != self.bot.user.id:
             return
@@ -52,12 +54,13 @@ class Apply(commands.Cog):
         emoji = payload.emoji
         reaction = discord.Reaction(message=message, data={"emoji": {"name": emoji.name, "id": emoji.id}, "me": False})
 
+        def has_role(member, role_name):
+            return any(role.name.lower() == role_name.lower() for role in member.roles)
 
         # Fetch the user who added the reaction
         user = self.bot.get_user(payload.user_id)
         embed = reaction.message.embeds[0]
         date = embed.timestamp.date()
-        guild = self.bot.get_guild(self.GUILD_ID)
         channel = reaction.message.channel
         mention_id = reaction.message.guild.get_member_named(
             embed.author.name).mention
@@ -69,11 +72,11 @@ class Apply(commands.Cog):
         fields_values['date'] = date.strftime("%d/%m/%Y")
         name = fields_values["discord"]
         applicant = guild.get_member_named(name)
-        member = guild.get_member(user.id)
-        if self.LEADER_ROLE not in [role.name.lower() for role in payload.member.roles]:
-            print(f'{name} has reacted to a message he is not authorized to react to')
-            await reaction.remove(user)
-            return
+        
+        if not has_role(member, self.LEADER_ROLE):
+                print(f'{name} has reacted to a message he is not authorized to react to')
+                await reaction.remove(user)
+                return
         
         if reaction.emoji == "✅":
             try:
