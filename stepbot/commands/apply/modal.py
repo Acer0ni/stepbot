@@ -140,7 +140,8 @@ class ApplyModal(discord.ui.Modal, title='Application form'):
         await msg.add_reaction("✅")
         await msg.add_reaction("❌")
         await msg.add_reaction("🕐")
-
+        await clan_thread.send(interaction.user.mention)
+        
         # delete this line after testing
         await interaction.response.send_message(embed=embed, ephemeral=True)
 

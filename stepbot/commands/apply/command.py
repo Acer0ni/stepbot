@@ -2,7 +2,7 @@ from discord.ext import commands
 from discord import app_commands
 from dotenv import load_dotenv
 from stepbot.commands.apply.modal import ApplyModal
-from stepbot.commands.sheet import *
+#from stepbot.commands.sheet import *
 import os
 import discord
 
@@ -34,29 +34,26 @@ class Apply(commands.Cog):
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload: discord.RawReactionActionEvent):
-        if payload.user_id == self.bot.user.id:
-            return
-
         channel = self.bot.get_channel(payload.channel_id)
         message = await channel.fetch_message(payload.message_id)
         guild = self.bot.get_guild(payload.guild_id)
         member = guild.get_member(payload.user_id)
-
+        user = self.bot.get_user(payload.user_id)
+        if payload.user_id == self.bot.user.id:
+            return
         if message.author.id != self.bot.user.id:
             return
-
         if message.channel.id not in [self.ABNORMAL_THREAD_ID, self.PARADOX_THREAD_ID, self.ANOMALY_THREAD_ID, self.PARANORMAL_THREAD_ID]:
-            return    
-
-        user = self.bot.get_user(payload.user_id)
-
-        # Create a discord.Reaction object
+            return
         emoji = payload.emoji
         reaction = discord.Reaction(message=message, data={"emoji": {"name": emoji.name, "id": emoji.id}, "me": False})
 
-        if self.LEADER_ROLE not in [role.name.lower() for role in member.roles]:
-            reaction.clear()
-            print((f"{member.mention} you are not allowed to use this command"))
+
+        # Create a discord.Reaction object
+        has_leader_role = any(role.name.lower() == self.LEADER_ROLE.lower() for role in member.roles)
+        if not has_leader_role:
+            await reaction.remove(user)
+            print(f"{member.mention} you are not allowed to use this command")
             return
 
 
@@ -81,7 +78,6 @@ class Apply(commands.Cog):
             try:
                 await applicant.send(f" Accepted. You can now apply to {embed.footer.text}. Please apply in game {mention_id}!")
                 await channel.send(f"{mention_id} you have been accepted to {embed.footer.text}, please apply in game.")
-                await reaction.message.delete()
             except discord.Forbidden:
                 await channel.send(f"{mention_id} you have been accepted to {embed.footer.text}, please apply in game.")
                 print("forbidden exception")
@@ -113,4 +109,4 @@ class Apply(commands.Cog):
                 await channel.send(f'Hey {mention_id}, we are full right now in {embed.footer.text}, you have been added to the waiting list, and we will get back to you when there is room.')
                 print("http exception")
             print(f"Inserting data into {embed.footer.text} waiting list")
-            insert_to_sheet(fields_values, 'stepbot', embed.footer.text)
+            #insert_to_sheet(fields_values, 'stepbot', embed.footer.text)
