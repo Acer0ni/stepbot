@@ -119,7 +119,7 @@ class ApplyModal(discord.ui.Modal, title='Application form'):
     async def on_submit(self, interaction: discord.Interaction):
         print(f"Validating {interaction.user} application")
         self.validate_on_submit()
-        print(f"application of {interaction.user} is ")
+        print(f"application of {interaction.user} is valid ")
         date = datetime.datetime.now()
 
         embed = discord.Embed(title='Application Submitted',
@@ -141,7 +141,8 @@ class ApplyModal(discord.ui.Modal, title='Application form'):
         await msg.add_reaction("❌")
         await msg.add_reaction("🕐")
         await clan_thread.send(interaction.user.mention)
-        
+        print(f"application of {interaction.user} sent to {clan_thread}")
+
         # delete this line after testing
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
