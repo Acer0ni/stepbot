@@ -77,7 +77,7 @@ class Apply(commands.Cog):
         
         if reaction.emoji == "✅":
             try:
-                print(name)
+                print(applicant)
                 await applicant.send(f"Accepted. You can now apply to {embed.footer.text}. Please apply in game {applicant.mention}!")
                 await channel.send(f"{applicant.mention} you have been accepted to {embed.footer.text}, please apply in game.")
             except discord.Forbidden:

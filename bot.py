@@ -7,7 +7,8 @@ from stepbot.commands.admincommands.command import AdminCommands
 from stepbot.commands.lft.command import Lft
 from stepbot.commands.dm.command import dm
 from stepbot.commands.open_report.command import report
-from stepbot.commands.close_report.command import close_report
+from stepbot.commands.close_report.command import close_channel
+from stepbot.commands.leadership.command import leadership
 from discord.ext import commands
 from dotenv import load_dotenv
 
@@ -20,15 +21,9 @@ GUILD_ID = os.getenv("GUILD_ID")
 
 bot = commands.Bot(command_prefix="/",intents =intents)
 
-async def heartbeat():
-    while True:
-        await bot.ws.send_heartbeat(data=None)
-        await asyncio.sleep(240)
-
 @bot.event
 async def on_ready():
     print(f"{bot.user.name} has connect to Discord:\n")
-    bot.loop.create_task(heartbeat())
 
 @bot.event
 async def on_disconnect():
@@ -54,7 +49,8 @@ async def setup(bot:commands.bot):
     await Lft.setup(bot)
     await dm.setup(bot)
     await report.setup(bot)
-    await close_report.setup(bot)
+    await close_channel.setup(bot)
+    await bot.add_cog(leadership(bot),guild=discord.Object(id=GUILD_ID))
 
 asyncio.run(setup(bot))
 bot.run(TOKEN)
