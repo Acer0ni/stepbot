@@ -10,7 +10,7 @@ class dm(commands.Cog):
 
     @app_commands.command(name="dm")
     async def cmd_apply(self, interaction: discord.Interaction, role: discord.Role, message: str):
-        if "step-bot" not in [role.name.lower() for role in interaction.user.roles]:
+        if "stepbot" not in [role.name.lower() for role in interaction.user.roles]:
             await interaction.response.send_message(content="You are not allowed to use this command", ephemeral=True)
             print("not allowed to use this command")
             return
