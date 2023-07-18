@@ -17,7 +17,7 @@ class dm(commands.Cog):
 
         if "stepbot" not in [role.name.lower() for role in interaction.user.roles]:
             await interaction.response.send_message(content="You are not allowed to use this command", ephemeral=True)
-            print("not allowed to use this command")
+            print(f"/!\ {member.name}tried to use this command and is not allowed /!\ \n")
             return        
             
         for member in role.members:
@@ -33,11 +33,11 @@ class dm(commands.Cog):
                 print(f"[-]\tFailed to send a message to {member.name}.")
                 print(f"[-]\tFailed to send a message to {failed}/{len(role.members)} members.\n")
                 await channel.send(f'Couldnt send the message to {member.name}')
-        await interaction.response.send_message(f'Sent message to {count}/{len(role.members)} members.', ephemeral=True)
+        await channel.send(f'/!\ Sent message to {count}/{len(role.members)} members and failed to sent a message to {failed}/{len(role.members)} /!\.')
     
     async def setup(bot: commands.Bot): 
         await bot.add_cog(dm(bot),guild=discord.Object(id=os.getenv("GUILD_ID"))) 
-        print("cog added")
+        print(f"[+]\tDM command Cog added")
 
     async def on_error(self, interaction: discord.Interaction, error: Exception) -> None:
         await interaction.response.send_message(error, ephemeral=True)
