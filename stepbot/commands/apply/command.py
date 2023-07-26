@@ -2,7 +2,7 @@ from discord.ext import commands
 from discord import app_commands
 from dotenv import load_dotenv
 from stepbot.commands.apply.modal import ApplyModal
-#from stepbot.commands.sheet import *
+from stepbot.commands.sheet import *
 import os
 import discord
 
@@ -111,4 +111,4 @@ class Apply(commands.Cog):
                 await channel.send(f'Hey {applicant.mention}, we are full right now in {embed.footer.text}, you have been added to the waiting list, and we will get back to you when there is room.')
                 print("http exception")
             print(f"Inserting data into {embed.footer.text} waiting list")
-            #insert_to_sheet(fields_values, 'stepbot', embed.footer.text)
+            insert_to_sheet(fields_values, 'stepbot', embed.footer.text)
