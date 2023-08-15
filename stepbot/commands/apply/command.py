@@ -2,6 +2,7 @@ from discord.ext import commands
 from discord import app_commands
 from dotenv import load_dotenv
 from stepbot.commands.apply.modal import ApplyModal
+from stepbot.commands.apply.refused import RefusedModal
 #from stepbot.commands.sheet import *
 import os
 import discord
@@ -90,8 +91,9 @@ class Apply(commands.Cog):
 
         elif reaction.emoji == "❌":
             try:
-                await applicant.send(f"Thank you for considering {embed.footer.text}, but your application as been rejected. {applicant.mention}")
-                await channel.send(f"Thank you for considering {embed.footer.text}, but your application as been rejected. {applicant.mention}")
+                await channel.send_modal(RefusedModal())
+                # await applicant.send(f"Thank you for considering {embed.footer.text}, but your application as been rejected. {applicant.mention}")
+                # await channel.send(f"Thank you for considering {embed.footer.text}, but your application as been rejected. {applicant.mention}")
             except discord.Forbidden:
                 await channel.send(f"Thank you for considering {embed.footer.text}, but your application as been rejected. {applicant.mention}")
                 print("forbidden exception")
