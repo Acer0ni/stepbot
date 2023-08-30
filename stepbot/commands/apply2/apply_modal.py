@@ -1,75 +1,63 @@
 import discord
 import traceback
 import datetime
+from stepbot.commands.apply2.apply_resp_view import *
 import os
-from dotenv import load_dotenv
-
 
 class ApplyModal(discord.ui.Modal, title='Application form'):
-
     def __init__(self, clan_name, *args, **kwargs):
         self.clan_name = clan_name
         self.ABNORMAL_THREAD_ID = int(os.getenv("ABNORMAL_THREAD_ID"))
         self.PARADOX_THREAD_ID = int(os.getenv("PARADOX_THREAD_ID"))
         self.ANOMALY_THREAD_ID = int(os.getenv("ANOMALY_THREAD_ID"))
         self.PARANORMAL_THREAD_ID = int(os.getenv("PARANORMAL_THREAD_ID"))
+        super().__init__(*args, **kwargs)
 
-        clan = discord.ui.Select(
-            placeholder='Select your clan',
-            options=[
-                discord.SelectOption(label='Abnormal', value='abnormal'),
-                discord.SelectOption(label='Paradox', value='paradox'),
-                discord.SelectOption(label='Anomaly', value='anomaly'),
-                discord.SelectOption(label='Paranormal', value='paranormal'),
-            ],
-            min_values=1,
-            max_values=1,
-        )
     # This is a short, single-line input, where user can submit the number of players applying
-        number = discord.ui.TextInput(
-            label='Number of players applying',
-            placeholder='1',
-            style=discord.TextStyle.short,
-            required=True,
-            max_length=1,
-        )
-        # This is a long, multi-line input, where user can submit the IGN of the player(s) applying
-        ign = discord.ui.TextInput(
-            label='IGN of requested members separated by commas',
-            style=discord.TextStyle.long,
-            placeholder='Player1, Player2, Player3',
-            required=True,
-            max_length=300,
-        )
-        # This is a long, multi-line input, where user can submit the CP of the player(s) applying
-        cp = discord.ui.TextInput(
-            label='CP of requested members separated by comma',
-            style=discord.TextStyle.long,
-            placeholder='10 000 000, 20 000 000, 30 000 000',
-            required=True,
-            max_length=100,
-        )
-        # This is a long, multi-line input, where user can submit the role of the player(s) applying
-        role = discord.ui.TextInput(
-            label='Please enter the class',
-            placeholder='Mage, Warrior, Hunter, Shaman, Druid, Gladiator, Warlock, Assassin.',
-            style=discord.TextStyle.long,
-            required=True,
-            max_length=100,
-        )
-        super().__init__(clan,number,ign,cp,role, *args, **kwargs)
+    number = discord.ui.TextInput(
+        label='Number of players applying',
+        placeholder='1',
+        style=discord.TextStyle.short,
+        required=True,
+        max_length=1,
+    )
+    # This is a long, multi-line input, where user can submit the IGN of the player(s) applying
+    ign = discord.ui.TextInput(
+        label='IGN of requested members separated by commas',
+        style=discord.TextStyle.long,
+        placeholder='Player1, Player2, Player3',
+        required=True,
+        max_length=300,
+    )
+    # This is a long, multi-line input, where user can submit the CP of the player(s) applying
+    cp = discord.ui.TextInput(
+        label='CP of requested members separated by comma',
+        style=discord.TextStyle.long,
+        placeholder='10 000 000, 20 000 000, 30 000 000',
+        required=True,
+        max_length=100,
+    )
+    # This is a long, multi-line input, where user can submit the role of the player(s) applying
+    role = discord.ui.TextInput(
+        label='Please enter the class',
+        placeholder='Mage, Warrior, Hunter, Shaman, Druid, Gladiator, Warlock, Assassin.',
+        style=discord.TextStyle.long,
+        required=True,
+        max_length=100,
+    )
+
     # get the thread id based on the clan name passed in
 
     def get_clan_id_from_name(self):
         thread_id = None
         match self.clan_name:
-            case "abnormal":
+            case "Abnormal":
                 thread_id = self.ABNORMAL_THREAD_ID
-            case "paradox":
+            case "Paradox":
                 thread_id = self.PARADOX_THREAD_ID
-            case "anomaly":
+            case "Anomaly":
                 thread_id = self.ANOMALY_THREAD_ID
-            case "paranormal":
+            case "Paranormal":
                 thread_id = self.PARANORMAL_THREAD_ID
             case _:
                 raise ValueError("invalid clan name")
@@ -132,25 +120,22 @@ class ApplyModal(discord.ui.Modal, title='Application form'):
         print(f"application of {interaction.user} is valid ")
         date = datetime.datetime.now()
 
-        embed = discord.Embed(title='Application Submitted',
-                              description=f'IGN: {self.number.value}')
-        embed.add_field(name='clan', value=self.clan.value, inline=False)
-        embed.add_field(name='Number',
-                        value=self.number.value, inline=False)
-        embed.add_field(name='IGN', value=self.ign.value, inline=False)
-        embed.add_field(name='CP', value=self.cp.value, inline=False)
-        embed.add_field(name='Role', value=self.role.value, inline=False)
+        embed = discord.Embed(title=f'Application Submitted by {interaction.user.name}')
+        embed.add_field(name='Number of applicant(s): ',value=self.number.value, inline=True)
+        embed.add_field(name='Name of applicant(s): ', value=self.ign.value, inline=True)
+        embed.add_field(name=' ', value=' ')
+        embed.add_field(name='CP of applicant(s)', value=self.cp.value, inline=False)
+        embed.add_field(name='Class of applicant(s)', value=self.role.value, inline=False)
         embed.set_author(name=interaction.user,icon_url=interaction.user.avatar.url if interaction.user.avatar else None)
         embed.set_footer(text=self.clan_name)
+        embed.set_image(url='https://i.imgur.com/10JUDEm.jpg')
 
         embed.timestamp = date
         thread_id = self.get_clan_id_from_name()
         clan_thread = interaction.client.get_channel(thread_id)
-        msg = await clan_thread.send(embed=embed)
+        view = ApplicationResponseView()
+        await clan_thread.send(embed=embed, view=view)
 
-        await msg.add_reaction("✅")
-        await msg.add_reaction("❌")
-        await msg.add_reaction("🕐")
         await clan_thread.send(interaction.user.mention)
         print(f"application of {interaction.user} sent to {clan_thread}")
 

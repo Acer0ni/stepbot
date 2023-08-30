@@ -91,7 +91,7 @@ class Apply(commands.Cog):
 
         elif reaction.emoji == "❌":
             try:
-                await channel.send_modal(RefusedModal())
+                await payload.send_modal(RefusedModal())
                 # await applicant.send(f"Thank you for considering {embed.footer.text}, but your application as been rejected. {applicant.mention}")
                 # await channel.send(f"Thank you for considering {embed.footer.text}, but your application as been rejected. {applicant.mention}")
             except discord.Forbidden:
