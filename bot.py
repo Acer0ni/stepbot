@@ -9,6 +9,8 @@ from stepbot.commands.dm.command import dm
 from stepbot.commands.open_report.command import report
 from stepbot.commands.close_report.command import close_channel
 from stepbot.commands.leadership.command import leadership
+from stepbot.commands.group.command import group
+from stepbot.commands.apply2.view import ClanView
 from discord.ext import commands
 from dotenv import load_dotenv
 
@@ -46,11 +48,13 @@ async def setup(bot:commands.bot):
     await bot.add_cog(Apply(bot),guild=discord.Object(id=GUILD_ID))
     await bot.add_cog(AdminCommands(bot),guild=discord.Object(id=GUILD_ID))
     await Ap.setup(bot)
+    await bot.add_cog(ClanView(bot),guild=discord.Object(id=GUILD_ID))
     await Lft.setup(bot)
     await dm.setup(bot)
     await report.setup(bot)
     await close_channel.setup(bot)
     await bot.add_cog(leadership(bot),guild=discord.Object(id=GUILD_ID))
+    await bot.add_cog(group(bot),guild=discord.Object(id=GUILD_ID))
 
 asyncio.run(setup(bot))
 bot.run(TOKEN)
