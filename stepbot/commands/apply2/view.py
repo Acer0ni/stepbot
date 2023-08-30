@@ -40,9 +40,22 @@ class ApplyView(discord.ui.View):
 class ClanView(commands.Cog):
     @app_commands.command(name="apply2")
     async def cmd_apply(self, interaction: discord.Interaction):
-        embed = Embed(title="Apply to one of AbNorMaL Syndicate clans", description="Welcome to the server, if you wish to apply to one of ours clans, please click on the button to start the process. ", color=0x0068cf)
-        apply_view = ApplyView(embed=embed)
-        await interaction.response.send_message(view=apply_view, embed=embed)
+        # Get the member who initiated the interaction
+        member = interaction.user
+        
+        leader_role = int(os.getenv("LEADER_ROLE_ID"))
+        print(leader_role)
+        leader_role = member.guild.get_role(leader_role)
+        
+        if leader_role in member.roles:
+            # Member has the leader role, allow them to use the command
+            embed = Embed(title="Apply to one of AbNorMaL Syndicate clans", description="Welcome to the server, if you wish to apply to one of ours clans, please click on the button to start the process. ", color=0x0068cf)
+            apply_view = ApplyView(embed=embed)
+            await interaction.response.send_message(view=apply_view, embed=embed)
+        else:
+            # Member doesn't have the leader role, send a message indicating permission denied
+            await interaction.response.send_message("You don't have permission to use this command.", ephemeral=True)
+
 
 
     
