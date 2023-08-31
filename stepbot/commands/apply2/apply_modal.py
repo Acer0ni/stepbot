@@ -16,7 +16,7 @@ class ApplyModal(discord.ui.Modal, title='Application form'):
     # This is a short, single-line input, where user can submit the number of players applying
     number = discord.ui.TextInput(
         label='Number of players applying',
-        placeholder='1',
+        placeholder='Input a number between 1-4',
         style=discord.TextStyle.short,
         required=True,
         max_length=1,

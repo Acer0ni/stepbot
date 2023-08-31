@@ -24,7 +24,6 @@ class DenialReasonModal(discord.ui.Modal, title='Deny Application'):
 
     async def on_submit(self, interaction: discord.Interaction):
         embed = interaction.message.embeds[0]
-        await self.disable_buttons()
         try:
             await interaction.response.send_message(f"Your Application was denied {self.applicant.mention} please check your Dm's for more information on the reason.")
             await self.applicant.send(f"Your application to {embed.footer.text} was denied for the following reason: {self.reason.value}")

@@ -61,6 +61,7 @@ class ApplicationResponseView(discord.ui.View):
             modal = DenialReasonModal(applicant=applicant, channel=channel)
             await interaction.response.send_modal(modal)
             button.label = "Application denied"
+            await DenialReasonModal.disable_buttons(self)
             await interaction.message.edit(view=self)
             self.timeout = 60
         else:
