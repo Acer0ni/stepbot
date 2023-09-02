@@ -93,3 +93,5 @@ class ApplicationResponseView(discord.ui.View):
             await interaction.response.send_message(content="You are not allowed to use this command", ephemeral=True)
             print(f"/!\ {interaction.user.name} tried to use this command and is not allowed /!\ \n")
             return
+
+

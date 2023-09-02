@@ -24,12 +24,11 @@ class SelectMenuView(discord.ui.View):
         self.add_item(Dropdown())
 
 class ApplyView(discord.ui.View):
-    def __init__(self, embed: discord.Embed, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.embed = embed
         self.timeout = None
 
-    @discord.ui.button(label="Apply", style=discord.ButtonStyle.green)
+    @discord.ui.button(label="Apply", style=discord.ButtonStyle.green, custom_id="apply")
     async def callback(self, interaction, button):
         select_menu_view = SelectMenuView()
         await interaction.response.send_message("Choose from the dropdown:", view=select_menu_view, ephemeral=True)
@@ -45,7 +44,7 @@ class ClanView(commands.Cog):
         
         if leader_role in member.roles:
             embed = Embed(title="Apply to one of AbNorMaL Syndicate clans", description="Welcome to the server, if you wish to apply to one of ours clans, please click on the button to start the process. ", color=0x0068cf)
-            apply_view = ApplyView(embed=embed)
+            apply_view = ApplyView()
             await interaction.response.send_message(view=apply_view, embed=embed)
         else:
             await interaction.response.send_message("You don't have permission to use this command.", ephemeral=True)
