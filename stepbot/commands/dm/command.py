@@ -37,7 +37,7 @@ class dm(commands.Cog):
     
     async def setup(bot: commands.Bot): 
         await bot.add_cog(dm(bot),guild=discord.Object(id=os.getenv("GUILD_ID"))) 
-        print(f"[+]\tDM command Cog added")
+        print(f"[+] DM command Cog added")
 
     async def on_error(self, interaction: discord.Interaction, error: Exception) -> None:
         await interaction.response.send_message(error, ephemeral=True)

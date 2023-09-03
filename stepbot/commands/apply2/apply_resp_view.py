@@ -35,13 +35,14 @@ class ApplicationResponseView(discord.ui.View):
         if self.has_leader_role(interaction.user):
             applicant, channel,field_values = await self.get_applicant_from_interaction(interaction)
             embed = interaction.message.embeds[0]
+            print(f'[+] {interaction.user.name} has accepted {applicant.name} to {embed.footer.text} at {embed.timestamp.strftime("%m/%d/%Y")}\n')
             try:
                 button.label = "Application accepted"
                 self.timeout = 60
                 await DenialReasonModal.disable_buttons(self)
                 await interaction.message.edit(view=self)
                 await applicant.send(f"Accepted. You can now apply to {embed.footer.text}. Please apply in game {applicant.mention}!")
-                await interaction.response.send_message(f"{applicant.mention} you have been accepted to {embed.footer.text}, please apply in game.")
+                await interaction.response.send_message(f"{applicant.mention} you have been accepted to {embed.footer.text}, please apply in game. If you change your mind, please contact a leader.")
             except discord.Forbidden:
                 await channel.send(f"{applicant.mention} you have been accepted to {embed.footer.text}, please apply in game.")
                 print("forbidden exception")
@@ -51,7 +52,7 @@ class ApplicationResponseView(discord.ui.View):
                 #print(f'{reaction.users} has accepted {name} to {embed.footer.text} at {date.strftime("%m/%d/%Y")}')
         else:
             await interaction.response.send_message(content="You are not allowed to use this command", ephemeral=True)
-            print(f"/!\ {interaction.user.name} tried to use this command and is not allowed /!\ \n")
+            print(f"/!\ {interaction.user.name} tried to use this command and is not allowed /!\\n")
             return
         
     @discord.ui.button(label="Deny", style=discord.ButtonStyle.danger, custom_id="deny")

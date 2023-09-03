@@ -16,7 +16,9 @@ class Dropdown(discord.ui.Select):
 
     async def callback(self, interaction: discord.Interaction):
         clan_name = self.values[0]
+        print(f"[+] {interaction.user.name} has selected {clan_name}\n")
         await interaction.response.send_modal(ApplyModal(clan_name=clan_name))
+        print(f"/!\ Application Modal sent to {interaction.user.name} /!\ \n")
 
 class SelectMenuView(discord.ui.View):
     def __init__(self):
@@ -30,8 +32,9 @@ class ApplyView(discord.ui.View):
 
     @discord.ui.button(label="Apply", style=discord.ButtonStyle.green, custom_id="apply")
     async def callback(self, interaction, button):
+        print(f"/!\ {interaction.user.name} has clicked on the apply button /!\ \n")
         select_menu_view = SelectMenuView()
-        await interaction.response.send_message("Choose from the dropdown:", view=select_menu_view, ephemeral=True)
+        await interaction.response.send_message("Choose a clan from the dropdown:", view=select_menu_view, ephemeral=True)
 
 class ClanView(commands.Cog):
     @app_commands.command(name="apply2")
@@ -39,7 +42,6 @@ class ClanView(commands.Cog):
         member = interaction.user
         
         leader_role = int(os.getenv("LEADER_ROLE_ID"))
-        print(leader_role)
         leader_role = member.guild.get_role(leader_role)
         
         if leader_role in member.roles:
