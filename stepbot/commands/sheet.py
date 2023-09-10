@@ -39,7 +39,7 @@ def insert_to_sheet(dictionary, worksheet,spreadsheet):
                 column = waitlist.find(key).col
                 
             for v in values:
-                while waitlist.cell(empty_row, column).value is not None:
-                    column += 1
+                # while waitlist.cell(empty_row, column).value is not None:
+                #     column += 1
                 waitlist.update_cell(empty_row, column, v)
                 print(f'Inserted {v} to {key} column \t')

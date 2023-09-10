@@ -17,10 +17,10 @@ class ApplicationResponseView(discord.ui.View):
         fields_values = {}
         for field in embed.fields:
             fields_values[field.name] = field.value
-        fields_values['discord'] = embed.author.name.split('#')[0]
-        fields_values['date'] = date.strftime("%d/%m/%Y")
+        fields_values['date'] = date.strftime("%d/%B/%Y")
+        fields_values['name'] = interaction.user.display_name
         
-        name = fields_values["discord"]
+        name = embed.author.name.split('#')[0]
         applicant = guild.get_member_named(name)
 
         return applicant,channel,fields_values
@@ -49,7 +49,6 @@ class ApplicationResponseView(discord.ui.View):
             except discord.HTTPException:
                 await channel.send(f"{applicant.mention} you have been accepted to {embed.footer.text}, please apply in game.")
                 print("http exception")
-                #print(f'{reaction.users} has accepted {name} to {embed.footer.text} at {date.strftime("%m/%d/%Y")}')
         else:
             await interaction.response.send_message(content="You are not allowed to use this command", ephemeral=True)
             print(f"/!\ {interaction.user.name} tried to use this command and is not allowed /!\\n")
