@@ -6,12 +6,9 @@ from discord.ext import commands
 
 
 class AdminCommands(commands.Cog):
-
-
     def __init__(self,bot:commands.bot):
         self.bot = bot
         self.GUILD_ID = int(os.getenv("GUILD_ID"))
-
     
     @commands.command(name = "sync")
     async def cmd_sync(self,ctx:commands.context):

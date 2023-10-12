@@ -4,7 +4,7 @@ import asyncio
 from stepbot.commands.apply.command import Apply
 from stepbot.commands.ap.command import Ap
 from stepbot.commands.admincommands.command import AdminCommands
-from stepbot.commands.lft.command import Lft
+from stepbot.commands.lft.command import Lft,LftView
 from stepbot.commands.dm.command import dm
 from stepbot.commands.open_report.command import report
 from stepbot.commands.close_report.command import close_channel
@@ -49,7 +49,7 @@ async def setup(bot:commands.bot):
     await bot.add_cog(AdminCommands(bot),guild=discord.Object(id=GUILD_ID))
     await Ap.setup(bot)
     await bot.add_cog(ClanView(bot),guild=discord.Object(id=GUILD_ID))
-    await Lft.setup(bot)
+    await bot.add_cog(Lft(bot),guild=discord.Object(id=GUILD_ID))
     await dm.setup(bot)
     await report.setup(bot)
     await close_channel.setup(bot)
@@ -58,6 +58,7 @@ async def setup(bot:commands.bot):
     print("[+] All cogs have been loaded successfully")
     bot.add_view(ApplicationResponseView())
     bot.add_view(ApplyView())
+    #bot.add_view(LftView())
     print("[+] All views have been loaded successfully")
 
 asyncio.run(setup(bot))
