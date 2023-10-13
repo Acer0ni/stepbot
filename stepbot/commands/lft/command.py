@@ -4,7 +4,7 @@ from discord import app_commands
 from discord.embeds import Embed
 import os
 
-class Dropdown(discord.ui.Select):
+class ClassDropdown(discord.ui.Select):
     def __init__(self):
         options = [
             discord.SelectOption(label='Assasin', emoji='<:class_assassin:1130684641091801239>'),
@@ -21,13 +21,91 @@ class Dropdown(discord.ui.Select):
     async def callback(self, interaction: discord.Interaction):
         class_name = self.values[0]
         print(f"[+] {interaction.user.name} has selected {class_name}\n")
-        #logic to be filled in here
+        cpView = CPView()
+        await interaction.response.send_message("Choose a CP from the dropdown:", view=cpView, ephemeral=True)
+        print(f"/!\ Lft Modal sent to {interaction.user.name} /!\ \n")
+
+class CPDropdown(discord.ui.Select):
+    def __init__(self):
+        options = [
+            discord.SelectOption(label='4m-6m'),
+            discord.SelectOption(label='6m-8m'),
+            discord.SelectOption(label='8m-10m'),
+            discord.SelectOption(label='10m-12m'),
+            discord.SelectOption(label='12m-15m'),
+            discord.SelectOption(label='15m-18m'),
+            discord.SelectOption(label='18m-21m'),
+            discord.SelectOption(label='21m-25m'),
+            discord.SelectOption(label='25m-30m'),
+            discord.SelectOption(label='30m-36m'),
+            discord.SelectOption(label='36m-42m'),
+            discord.SelectOption(label='42m-48m'),
+            discord.SelectOption(label='48m-55m'),
+            discord.SelectOption(label='55m+'),
+        ]
+        super().__init__(placeholder='Select an option...', min_values=1, max_values=1, options=options)
+
+    async def callback(self, interaction: discord.Interaction):
+        cp_name = self.values[0]
+        print(f"[+] {interaction.user.name} has selected {cp_name}\n")
+        qbView = QBView()
+        await interaction.response.send_message("Choose a QB from the dropdown:", view=qbView, ephemeral=True)
+        print(f"/!\ Lft Modal sent to {interaction.user.name} /!\ \n")
+
+class QBDropdown(discord.ui.Select):
+    def __init__(self):
+        options = [
+            discord.SelectOption(label='1/day', emoji='1️⃣'),
+            discord.SelectOption(label='2/day', emoji='2️⃣'),
+            discord.SelectOption(label='3/day', emoji='3️⃣'),
+            discord.SelectOption(label='4/day', emoji='4️⃣'),
+            discord.SelectOption(label='5/day', emoji='5️⃣'),
+            discord.SelectOption(label='6+/day', emoji='6️⃣'),
+        ]
+        super().__init__(placeholder='Select an option...', min_values=1, max_values=1, options=options)
+    async def callback(self, interaction: discord.Interaction):
+        qb_name = self.values[0]
+        print(f"[+] {interaction.user.name} has selected {qb_name}\n")
+        spendingView = SpendingView()
+        await interaction.response.send_message("Choose a spending from the dropdown:", view=spendingView, ephemeral=True)
+        print(f"/!\ Lft Modal sent to {interaction.user.name} /!\ \n")
+
+class SpendingDropdown(discord.ui.Select):
+    def __init__(self):
+        options = [
+            discord.SelectOption(label='Free to play'),
+            discord.SelectOption(label='passes only'),
+            discord.SelectOption(label='Season packs'),
+            discord.SelectOption(label='pearls'),
+            discord.SelectOption(label='weekly pack'),
+            discord.SelectOption(label='everything available'),
+        ]
+        super().__init__(placeholder='Select an option...', min_values=1, max_values=4, options=options)
+    async def callback(self, interaction: discord.Interaction):
+        spending_name = self.values[0]
+        print(f"[+] {interaction.user.name} has selected {spending_name}\n")
+        #logic here
         print(f"/!\ Lft Modal sent to {interaction.user.name} /!\ \n")
 
 class ClassView(discord.ui.View):
     def __init__(self):
         super().__init__()
-        self.add_item(Dropdown())
+        self.add_item(ClassDropdown())
+        
+class CPView(discord.ui.View):
+    def __init__(self):
+        super().__init__()
+        self.add_item(CPDropdown())
+
+class QBView(discord.ui.View):
+    def __init__(self):
+        super().__init__()
+        self.add_item(QBDropdown())
+
+class SpendingView(discord.ui.View):
+    def __init__(self):
+        super().__init__()
+        self.add_item(SpendingDropdown())
 
 class LftView(discord.ui.View):
     def __init__(self, *args, **kwargs):

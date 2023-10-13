@@ -18,7 +18,7 @@ from dotenv import load_dotenv
 intents = discord.Intents.all()
 
 load_dotenv()
-TOKEN = os.getenv("DISCORD_TOKEN")
+TOKEN = os.getenv("DISCORD_TOKEN2")
 GUILD_ID = os.getenv("GUILD_ID")
 
 
