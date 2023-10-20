@@ -45,7 +45,12 @@ class ApplyModal(discord.ui.Modal, title='Application form'):
         required=True,
         max_length=100,
     )
-
+    teammates = discord.ui.TextInput(
+        label='teammates already in the clan (if applicable)',
+        placeholder='Player1, Player2, Player3',
+        style=discord.TextStyle.short,
+        required=False,
+    )
     # get the thread id based on the clan name passed in
 
     def get_clan_id_from_name(self):
@@ -126,6 +131,7 @@ class ApplyModal(discord.ui.Modal, title='Application form'):
         embed.add_field(name=' ', value=' ')
         embed.add_field(name='CP of applicant(s)', value=self.cp.value, inline=False)
         embed.add_field(name='Class of applicant(s)', value=self.role.value, inline=False)
+        embed.add_field(name='Teammates in clan:', value=self.teammates.value, inline=False)
         embed.set_author(name=interaction.user,icon_url=interaction.user.avatar.url if interaction.user.avatar else None)
         embed.set_footer(text=self.clan_name)
         embed.set_image(url='https://i.imgur.com/10JUDEm.jpg')
