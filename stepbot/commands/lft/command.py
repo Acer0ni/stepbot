@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from discord import app_commands
 from discord.embeds import Embed
+from stepbot.commands.lft.modal import CommentModal
 import os
 
 class ClassDropdown(discord.ui.Select):
@@ -84,9 +85,9 @@ class SpendingDropdown(discord.ui.Select):
     async def callback(self, interaction: discord.Interaction):
         spending_name = self.values[0]
         print(f"[+] {interaction.user.name} has selected {spending_name}\n")
-        #logic here
+        await interaction.response.send_modal(CommentModal())
         print(f"/!\ Lft Modal sent to {interaction.user.name} /!\ \n")
-
+     
 class ClassView(discord.ui.View):
     def __init__(self):
         super().__init__()
