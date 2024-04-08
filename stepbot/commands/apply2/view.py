@@ -10,7 +10,6 @@ class Dropdown(discord.ui.Select):
                 discord.SelectOption(label='Abnormal', emoji='<a:bluecheck:1145758589584162876>', description='CP : 24m+ | Full team Prefered'),
                 discord.SelectOption(label='Paradox', emoji='<a:redcheck:1145758812414939257>', description='CP : 18m+ | Full Team Prefered'),
                 discord.SelectOption(label='Anomaly', emoji='<a:orangecheck:1145758814675669002>', description='CP : 15m+'),
-                discord.SelectOption(label='Paranormal', emoji='<a:greencheck:1145758816978350230>', description='CP : 15m+'),
             ]
         super().__init__(placeholder='Select an option...', min_values=1, max_values=1, options=options)
 
